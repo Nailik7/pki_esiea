@@ -1,57 +1,33 @@
 from cryptography.hazmat.backends import default_backend
-
 from cryptography.hazmat.primitives import serialization
-
-from cryptography.hazmat.primitives.asymmetric import rsa
 from datetime import datetime, timedelta
-
 from cryptography import x509
-
 from cryptography.x509.oid import NameOID
-
 from cryptography.hazmat.primitives import hashes
 
-def generate_csr(private_key, filename, **kwargs):
 
-    subject = x509.Name([
+def create_csr(private_key, filename, tab: list):
 
-            x509.NameAttribute(NameOID.COUNTRY_NAME, kwargs["country"]),
-
-            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, kwargs["state"]),
-
-            x509.NameAttribute(NameOID.LOCALITY_NAME, kwargs["locality"]),
-
-            x509.NameAttribute(NameOID.ORGANIZATION_NAME, kwargs["org"]),
-
-            x509.NameAttribute(NameOID.COMMON_NAME, kwargs["hostname"]),
-
+    subject = x509.Name([            
+            x509.NameAttribute(NameOID.COUNTRY_NAME, tab[0:14][1]),
+            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, tab[0:13][3]),
+            x509.NameAttribute(NameOID.LOCALITY_NAME, tab[0:14][5]),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, tab[0:14][7]),
+            x509.NameAttribute(NameOID.ORGANIZATIONAL_UNIT_NAME, tab[0:14][9]),
+            x509.NameAttribute(NameOID.COMMON_NAME, tab[0:14][13]),     
         ])
-
-
     # Generate any alternative dns names
-
+    
     alt_names = []
-
-    for name in kwargs.get("alt_names", []):
+    for name in tab[0:14][13]:
 
         alt_names.append(x509.DNSName(name))
 
     san = x509.SubjectAlternativeName(alt_names)
 
 
-    builder = (
-
-        x509.CertificateSigningRequestBuilder()
-
-        .subject_name(subject)
-
-        .add_extension(san, critical=False)
-
-    )
-
-
+    builder = (x509.CertificateSigningRequestBuilder().subject_name(subject).add_extension(san, critical=False))
     csr = builder.sign(private_key, hashes.SHA256(), default_backend())
-
 
     with open(filename, "wb") as csrfile:
 
@@ -92,15 +68,7 @@ def sign_csr(csr, ca_public_key, ca_private_key, new_filename):
         builder = builder.add_extension(extension.value, extension.critical)
 
 
-    public_key = builder.sign(
-
-        private_key=ca_private_key,
-
-        algorithm=hashes.SHA256(),
-
-        backend=default_backend(),
-
-    )
+    public_key = builder.sign(private_key=ca_private_key,algorithm=hashes.SHA256(),backend=default_backend(),)
 
 
     with open(new_filename, "wb") as keyfile:

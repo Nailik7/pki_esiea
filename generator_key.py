@@ -12,7 +12,7 @@ from cryptography.x509.oid import NameOID
 from cryptography.hazmat.primitives import hashes
 
 
-def generate_private_key(filename: str, passphrase: str):
+def generator_private_key(filename: str, passphrase: str):
 
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
 
@@ -29,40 +29,29 @@ def generate_private_key(filename: str, passphrase: str):
 
     return private_key
 
-def generate_public_key(private_key, filename, **kwargs):
+def generator_public_key(private_key, filename, tab: list):
 
     subject = x509.Name(
 
         [
-
-            x509.NameAttribute(NameOID.COUNTRY_NAME, kwargs["country"]),
-
-            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, kwargs["state"]),
-
-            x509.NameAttribute(NameOID.LOCALITY_NAME, kwargs["locality"]),
-
-            x509.NameAttribute(NameOID.ORGANIZATION_NAME, kwargs["org"]),
-
-            x509.NameAttribute(NameOID.COMMON_NAME, kwargs["hostname"]),
+            x509.NameAttribute(NameOID.COUNTRY_NAME, tab[0:12][1]),
+            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, tab[0:12][3]),
+            x509.NameAttribute(NameOID.LOCALITY_NAME, tab[0:12][5]),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, tab[0:12][7]),
+            x509.NameAttribute(NameOID.ORGANIZATIONAL_UNIT_NAME, tab[0:12][9]),
+            x509.NameAttribute(NameOID.COMMON_NAME, tab[0:12][11]),
 
         ]
 
     )
 
 
-    # Because this is self signed, the issuer is always the subject
 
-    #issuer = subject
-
-
-    
 
     valid_from = datetime.utcnow()
 
     valid_to = valid_from + timedelta(days=100)
 
-
-    # Used to build the certificate
 
     builder = (
 
@@ -85,13 +74,8 @@ def generate_public_key(private_key, filename, **kwargs):
     )
 
 
-    # Sign the certificate with the private key
 
-    public_key = builder.sign(
-
-        private_key, hashes.SHA256(), default_backend()
-
-    )
+    public_key = builder.sign(private_key, hashes.SHA256(), default_backend())
 
 
     with open(filename, "wb") as certfile:
