@@ -1,4 +1,6 @@
 {
+    "filename" : "ra_cert",
+    "privatekey" : "ra-private-key",
     "Country" : "FR", 
     "State" :"IDF", 
     "Localisation" : "Paris", 

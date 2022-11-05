@@ -1,4 +1,6 @@
 {
+    "filename" : "ca_cert",
+    "privatekey" : "ca_private-key",
     "Country" : "FR", 
     "State" :"IDF", 
     "Localisation" :  "Paris", 

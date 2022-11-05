@@ -7,9 +7,8 @@ def parse_args()-> Namespace:
     return parser.parse_args()
             
                        
-args = parse_args()
-configfile = args.config
 
+        
 
 with open("Config_CA.json", "r") as file :
     config = json.loads(file.read())

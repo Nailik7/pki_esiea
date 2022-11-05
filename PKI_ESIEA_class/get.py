@@ -27,16 +27,17 @@ class get():
             return os.path.join(os.path.dirname(sys.argv[0]),"crl")
         
     
-    def get_conf(self,type : str):
+    def get_conf(self, conf : list, type : str):
         
-        if type == "CA":
-            with open("Config_CA.json", "r") as file :
-                config = json.loads(file.read())
-                return config
-        
-        elif type == "RA":
-            with open("Config_RA.json", "r") as file :
-                config = json.loads(file.read())
-                return config
+        for file in conf :
+            if type == "CA" and "CA" in file:
+                with open("Config_CA.json", "r") as file :
+                    config = json.loads(file.read())
+                    return config
+            
+            elif type == "RA" and "RA" in file:
+                with open("Config_RA.json", "r") as file :
+                    config = json.loads(file.read())
+                    return config
             
             
