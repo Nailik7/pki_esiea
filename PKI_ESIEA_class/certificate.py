@@ -105,7 +105,7 @@ class certificate():
         with open(os.path.join(path_ra,"ra_cert.pem"), "rb") as ra_public_key_file :
             ra_public_key = x509.load_pem_x509_certificate(ra_public_key_file.read(), default_backend())
 
-        path_crl = os.path.join(os.path.dirname(sys.argv[0]),"Crl")
+        path_crl = os.path.join(os.path.dirname(sys.argv[0]),"crl")
         
         with open(os.path.join(path_ra,"ra-private-key.pem"), "rb") as ra_private_key_file :
             ra_private_key = serialization.load_pem_private_key(ra_private_key_file.read(), password=None,backend= default_backend())
