@@ -49,3 +49,49 @@ INFO:root:On decode la cle prive du RA
 INFO:root:Signature certificat client par le RA
 INFO:root:Un certificat client vient d'Ãªtre crÃ©Ã© en utilisant le type de clÃ© 'RSA', l'algorithme de hash 'SHA224', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'Lyon', l'organistation 'Organisation', ressource name 'Ressource Name', l'hostname 'Hostname' et le DNS 'dns.com' 
 
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Génération de la clé privé RSA en cours
+INFO:root:Génération de la cle privé RSA termine
+INFO:root:Le dossier client existe deja
+INFO:root:Génération de la clé privé RSA en cours
+INFO:root:Génération de la cle privé RSA termine
+INFO:root:On decode la requete du certificat client
+INFO:root:On decode le certificat du RA
+INFO:root:On decode la cle prive du RA
+INFO:root:Signature certificat client par le RA
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA224', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'fezfezfez', l'organistation 'ezfezfez', ressource name 'ffezfzefezf', l'hostname 'fzefezfez' et le DNS 'ezfezfze.com' 
+
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:On decode la requete du certificat client
+INFO:root:On decode le certificat du RA
+INFO:root:On decode la cle prive du RA
+INFO:root:Signature certificat client par le RA
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé '.\Client\qzdzqdzdq.pem', l'algorithme de hash 'SHA256', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'qzdqdz', l'organistation 'qdqzdqzd', ressource name 'dqzzqdzqd', l'hostname 'qzdzqdzdq' et le DNS 'dqzdqdz.com' 
+
+INFO:root:Le dossier client existe deja
+INFO:root:Génération de la clé privé RSA en cours
+INFO:root:Génération de la cle privé RSA termine
+INFO:root:On decode la requete du certificat client
+INFO:root:On decode le certificat du RA
+INFO:root:On decode la cle prive du RA
+INFO:root:Signature certificat client par le RA
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA256', le pays 'France', l'etat ou la region 'Paris', l'adresse 'Paris', l'organistation 'Esiea', ressource name 'RH', l'hostname 'Esiea' et le DNS 'Esiea.com' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé '', l'algorithme de hash 'SHA256', le pays 'Afrique du Sud', l'etat ou la region 'Afrique du Sud', l'adresse 'dqdq', l'organistation 'qdqdqzdzq', ressource name 'zdzqdzq', l'hostname 'zqdzqdzq' et le DNS 'esiea.com' 
+
+INFO:root:Le dossier client existe deja
+INFO:root:Génération de la clé privé RSA en cours
+INFO:root:Génération de la cle privé RSA termine
+INFO:root:On decode la requete du certificat client
+INFO:root:On decode le certificat du RA
+INFO:root:On decode la cle prive du RA
+INFO:root:Signature certificat client par le RA
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA256', le pays 'Afrique du Sud', l'etat ou la region 'Afrique du Sud', l'adresse 'dqdq', l'organistation 'qdqdqzdzq', ressource name 'zdzqdzq', l'hostname 'zqdzqdzq' et le DNS 'esiea.com' 
+

@@ -18,40 +18,33 @@ from revoke import revoke
 
 
 class verif_parse():
-    
-    def __init__(self):
-        path_client = os.path.join(os.path.dirname(sys.argv[0]),"Client")
-        path_ra = os.path.join(os.path.dirname(sys.argv[0]),"Certificate-RA") 
-        self.verifyIssuer(os.path.join(path_ra,"ra_cert.pem"), os.path.join(path_client,"cdiscount_cert.pem"))
-        self.parse(os.path.join(os.path.join(path_client,"cdiscount_cert.pem")))
-        self.expiration(os.path.join(path_client,"cdiscount_cert.pem"))
-        revoke.check_cert_is_revoke(self, os.path.join(path_client,"cdiscount_cert.pem"))
-    
+     
     def verifyIssuer(self,issuerCertificate, subjectCertificate) :
         
         with open(issuerCertificate, "rb") as issuer_file:
-            issuer_public_key = x509.load_pem_x509_certificate(issuer_file.read(), default_backend())
+            issuer_public_key = x509.load_pem_x509_certificate(issuer_file.read(), default_backend()) #On decode le certificat issuer
             
         with open(subjectCertificate, "rb") as subject_file :
-            subject_public_key = x509.load_pem_x509_certificate(subject_file.read(), default_backend())
+            subject_public_key = x509.load_pem_x509_certificate(subject_file.read(), default_backend())  #On decode le certificat subjecy 
         
         issuerPublicKey = issuer_public_key.public_key()    
-        verifier = issuerPublicKey.verify(data = subject_public_key.tbs_certificate_bytes, signature=subject_public_key.signature, 
+        verifier = issuerPublicKey.verify(data = subject_public_key.tbs_certificate_bytes, signature=subject_public_key.signature,  #On vérifie que le certificat Subject est bien signé par le Issuer
                                           padding = padding.PKCS1v15(),algorithm =subject_public_key.signature_hash_algorithm)
         print(type(subject_public_key.tbs_certificate_bytes))
         if verifier == None :
-            print("Le certificat est bien signe par l'autorite d'enregistrement")
+            return "Le certificat est bien signé par l'autorité d'enregistrement"
         else :
-            print("ajout",revoke.add_revoke(self,subject_public_key))
+            revoke.add_revoke(self,subject_public_key)
+            return "La signature du certificat n'est pas valide, donc on ajoute le certificat à la liste du certficat de révocation"
     
     def expiration(self,cert_file : str):
         with open(cert_file, 'rb+') as file :
             X509_cert = x509.load_pem_x509_certificate(file.read(),default_backend())
         if X509_cert.not_valid_after <= datetime.utcnow() :
-            print("Le certificat a expiré ")
             revoke.add_revoke(self,X509_cert)
+            return "Le certificat a expiré, on a joute le certificat dans la liste de révocation "
         else :
-            print("Le certificat n'a pas encore expiré")
+            return "Le certificat n'a pas encore expiré"
             
           
     def parse(self,cert_file : str):

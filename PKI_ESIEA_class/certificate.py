@@ -15,19 +15,7 @@ import json
 
 
 
-class certificate():
-    
-    def __init__(self, configfile : list):
-        self.filelog = "certificate.log"    
-        logging.basicConfig(filename=self.filelog, level=logging.DEBUG) 
-        self.configfile = configfile
-        self.create_ca()
-        self.create_ra(get.get_path(self,"ca"))
-        #self.create_client("RSA")
-        self.create_crl(get.get_path(self,"ra"))
-        
-       
-    
+class certificate():  
     def create_ca(self, configfile):
         
         try:
@@ -57,7 +45,7 @@ class certificate():
             pass
 
         path_ra = os.path.join(os.path.dirname(sys.argv[0]),"Certificate-RA") #On crée une variable contenant le chemin du dossier des certificats et la clé privé de l'autorité d'enregistrement
-        conf= get.get_conf(self,self.configfile,"RA") #On récupère la configuration du RA dans le fichier Config_CA.json
+        conf= get.get_conf(self,self.configfile,"RA") #On récupère la configuration du RA dans le fichier Config_RA.json
         ra_private_key = genkey.generator_private_key_rsa(self,os.path.join(path_ra,conf["privatekey"] + ".pem"))
         
         with open(os.path.join(path_ca,get.get_conf(self,self.configfile,"CA")["filename"] + ".pem"), "rb") as ca_public_key_file :
@@ -90,13 +78,13 @@ class certificate():
                 file.write(json.dumps(conf).encode())
         
         if type_key == "RSA": #Si le paramètre de type_key c'est RSA
-            csr_private_key = genkey.generator_private_key_rsa(self,os.path.join(path_client,get.get_conf_client(self,"client") + ".pem")) #On généère une clé privé de type RSA
+            csr_private_key = genkey.generator_private_key_rsa(self,os.path.join(path_client,get.get_conf_client(self,"client") + ".pem")) #On génère une clé privé de type RSA
         elif type_key == "DSA": #Si le paramètre de type_key c'est DSA
             csr_private_key = genkey.generator_private_key_dsa(self,os.path.join(path_client,get.get_conf_client(self,"client")+".pem")) #On génère une clé privé de type DSA
-        elif type_key == None:
-            print(type_key)
         else:
-            print(type_key)
+            csrpkey = type_key
+            with open(csrpkey, "rb") as key:
+               csr_private_key = serialization.load_pem_private_key(key.read(), password=None,backend= default_backend())
                    
         generator.create_request_client(self,csr_private_key,os.path.join(path_client,get.get_conf_client(self,"client")+"_cert.pem"),conf,algo) #On genère une requête de certificat client en appelant la méthode csr, et qui prend en paramètre la clé publique et l'aglo de hashage
 
@@ -120,20 +108,21 @@ class certificate():
     
     
     
-    def create_crl(self,path_ra : str):
+    def create_crl(self, configfile):
         try:
             os.mkdir(os.path.join(os.path.dirname(sys.argv[0]),"crl")) #On crée le dossier de la liste révocation de certificat 
         
         except OSError as e :
             print("Le dossier existe déja") #Si le dossier existe déja on n'écrase pas l'ancien dossier
             pass
+        conf= get.get_conf(self,configfile,"RA")
 
-        with open(os.path.join(path_ra,get.get_conf(self,self.configfile,"RA")["filename"] + ".pem"), "rb") as ra_public_key_file :
+        with open(os.path.join(get.get_path(self,"ra"),conf["filename"] + ".pem"), "rb") as ra_public_key_file :
             ra_public_key = x509.load_pem_x509_certificate(ra_public_key_file.read(), default_backend()) #On recupère les données de la clé publique du certificat d'autorité d'enregistrement
 
         path_crl = os.path.join(os.path.dirname(sys.argv[0]),"crl")
         
-        with open(os.path.join(path_ra,get.get_conf(self,self.configfile,"RA")["privatekey"] + ".pem"), "rb") as ra_private_key_file :
+        with open(os.path.join(get.get_path(self,"ra"),get.get_conf(self,self.configfile,"RA")["privatekey"] + ".pem"), "rb") as ra_private_key_file :
             ra_private_key = serialization.load_pem_private_key(ra_private_key_file.read(), password=None,backend= default_backend()) #On recupère la clé privé du certificat d'autorité d'enregistrement
         generator.generator_crl(self,ra_private_key,ra_public_key,os.path.join(path_crl,"crl_cert.pem")) #On va générer un cerfiticat qui va contenir la liste des certificats révoqués
 

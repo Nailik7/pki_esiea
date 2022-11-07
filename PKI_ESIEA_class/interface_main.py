@@ -111,6 +111,7 @@ class MainWindow(QWidget):
         logging.info(f"Generation du certificat racine terminée \n")
         certificate.create_ca(self, configfile)
         certificate.create_ra(self, get.get_path(self, 'ca'), configfile)
+        certificate.create_crl(self, configfile)
         GenerateClientUi.popup(self, "Création terminée")
         
 

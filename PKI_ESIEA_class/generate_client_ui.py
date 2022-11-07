@@ -27,7 +27,7 @@ from PyQt5.QtWidgets import (
     QCheckBox,
 )
 
-import pdb, sys, validators, logging
+import pdb, sys, validators, logging, shutil, os
 
 """ ------------------------------------------ """
 """ On trie les imports par ordre alphabétique """
@@ -868,8 +868,11 @@ class GenerateClientUi(QWidget):
             
             else:
                 self.state_or_reg = self.lang
-                if self.checkbox_yes.setChecked() == True:
+                if self.checkbox_yes.isChecked() == True:
                     self.rsa_dsa = None
+                    shutil.move(self.private_k_file,os.path.join(os.path.join(os.path.dirname(sys.argv[0]),"Client"), self.hostname + ".pem")) 
+                    self.rsa_dsa = str(os.path.join(os.path.join(os.path.dirname(sys.argv[0]),"Client"), self.hostname + ".pem"))
+                    print("dsa_rsa :",self.rsa_dsa)
                     certificate.create_client(self, self.rsa_dsa, self.cnt, self.state_or_reg, self.localisation, self.organisation, self.ressource_name, self.hostname, self.dns, self.filename, self.hash_alg)
                     self.popup("Le certificat a été créé avec succès")
                 else:
