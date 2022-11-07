@@ -465,8 +465,8 @@ class OtherOptions(QWidget):
                 GenerateClientUi.err_popup(self, "Erreur, le chemin saisi est invalide")
             else:
                 logging.info(f"On parse le fichier {cert_to_parse} \n")
-                GenerateClientUi.popup(self, "parsé")
-                verif_parse.parse(self, cert_to_parse)
+                parse = verif_parse.parse(self, cert_to_parse)
+                GenerateClientUi.popup(self,parse)
                 print(f"cert to parse {cert_to_parse}")
 
         elif self.checkbox_validity.isChecked() == True:

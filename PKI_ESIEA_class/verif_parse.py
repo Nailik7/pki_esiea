@@ -61,7 +61,7 @@ class verif_parse():
             
             if X509_cert.issuer is not None : #Si le certificat est issu d'une autorité 
                 Issuer = str(X509_cert.issuer).replace("<","").replace(">","").replace("Name","").replace("(", "").replace(")", "").split(",")
-                issuer_dict = { 
+                issuer_dict = { "Issuer " : "",
                                 'Country ' : Issuer[0][Issuer[0].find('='):].replace("=",""), 
                                 'State' : Issuer[1][Issuer[1].find('='):].replace("=",""),
                                 'Localisation' : Issuer[2][Issuer[2].find('='):].replace("=",""),
@@ -72,7 +72,7 @@ class verif_parse():
                             } #On afffiche dans un dictionnaire tous les attributs de l'autorité, et on supprime le signe "=" et tout ce qui est avant pour un meilleur affichage 
 
             subject_dict = {
-                
+                            'Subject certificate' : '',
                             'Country ' : subject[0][subject[0].find('='):].replace("=",""),
                             'State' : subject[1][subject[1].find('='):].replace("=",""),
                             'Localisation' : subject[2][subject[2].find('='):].replace("=",""),
@@ -85,6 +85,8 @@ class verif_parse():
                             'Cerfificate expire after ' : str(X509_cert.not_valid_after)    
                         } #On afffiche dans un dictionnaire tous les attributs du certificat, et on supprime le signe "=" et tout ce qui est avant pour un meilleur affichage 
             print(subject_dict,issuer_dict)
+            return str(subject_dict) + '\n\n\n\n' + str(issuer_dict)
+            
             
         
 def main():
