@@ -352,6 +352,8 @@ class GenerateClientUi(QWidget):
 
         self.filename = self.line_edit_form_select_filename.text()
 
+        self.private_k_file = self.file_zone.text()
+
         qp.end()
 
 
@@ -509,6 +511,7 @@ class GenerateClientUi(QWidget):
                              "background-color : #48d873;"      # On définit un fond pour le bouton dans les tons verts
                              "}"
                              )
+        
         
     def browse_pem_key_file(self):
         '''
@@ -822,7 +825,7 @@ class GenerateClientUi(QWidget):
 
         
 
-        '''On vérifie que tous les champs sont correctement rempli'''
+        '''On vérifie que tous les champs sont correctement remplis'''
 
 
         # Vérification de la longueur des champs de texte
@@ -869,8 +872,13 @@ class GenerateClientUi(QWidget):
             
             else:
                 self.state_or_reg = self.lang
-                certificate.create_client(self, self.rsa_dsa, self.cnt, self.state_or_reg, self.localisation, self.organisation, self.ressource_name, self.hostname, self.dns, self.filename, self.hash_alg)
-                self.popup("Le certificat a été créé avec succès")
+                if self.checkbox_yes.setChecked() == True:
+                    self.rsa_dsa = None
+                    certificate.create_client(self, self.rsa_dsa, self.cnt, self.state_or_reg, self.localisation, self.organisation, self.ressource_name, self.hostname, self.dns, self.filename, self.hash_alg)
+                    self.popup("Le certificat a été créé avec succès")
+                else:
+                    certificate.create_client(self, self.rsa_dsa, self.cnt, self.state_or_reg, self.localisation, self.organisation, self.ressource_name, self.hostname, self.dns, self.filename, self.hash_alg)
+                    self.popup("Le certificat a été créé avec succès")
                 logging.info(f"Un certificat client vient d'être créé en utilisant le type de clé '{self.rsa_dsa}', l'algorithme de hash '{self.hash_alg}', le pays '{self.lang}', l'etat ou la region '{self.state_or_reg}', l'adresse '{self.localisation}', l'organistation '{self.organisation}', ressource name '{self.ressource_name}', l'hostname '{self.hostname}' et le DNS '{self.dns}' \n")
 
 
