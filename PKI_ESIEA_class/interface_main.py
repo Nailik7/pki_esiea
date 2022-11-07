@@ -1,4 +1,5 @@
 from generate_client_ui import GenerateClientUi
+from other_options import OtherOptions
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import (
@@ -30,9 +31,8 @@ class MainWindow(QWidget):
     def initUI(self):
 
         self.setWindowTitle("PKI_ESIEA")                # On donne le titre de la fenetre
-        self.setWindowIcon(QtGui.QIcon('images/logo.png'))     # On met un beau logo
+        self.setWindowIcon(QtGui.QIcon('UI/images/logo.png'))     # On met un beau logo
         self.resize(700,850)                            # On redéfinit la taille de la fenetre en 400 par 400
-        self.centrer()                                  # On appelle la fonction pour centrer la fenetre
         
         
         #self.zone_ip()      # On appelle les fonctions permettant d'afficher la zone de texte correspondant à l'IP
@@ -86,7 +86,7 @@ class MainWindow(QWidget):
         button_parse= QPushButton('Parser ou tester un certificat', self)        # On définit le titre du bouton      
         button_parse.setToolTip('Parser ou tester un certificat ?')    # On configure ce qui va s'afficher lorsque l'on passe la souris au dessus du bouton
         button_parse.move(275,500)                                     # On séléctionne la position du bouton
-        button_parse.clicked.connect(self.on_click_parse_or_test)      # On appelle la fonction "on_click" lorsque l'on clique sur le bouton
+        button_parse.clicked.connect(self.on_click_others_options)      # On appelle la fonction "on_click" lorsque l'on clique sur le bouton
         """ On style le bouton """
         
         button_parse.setStyleSheet("QPushButton"
@@ -130,53 +130,26 @@ class MainWindow(QWidget):
         '''
 
 
-    def show_clt_child_window(self):
+    def show_clt_child_window_clt(self):
         self.child_clt_window = GenerateClientUi()
         self.child_clt_window.show()
 
+    def show_clt_child_window_other(self):
+        self.child_clt_window = OtherOptions()
+        self.child_clt_window.show()
 
     def on_click_generate_clt(self):
         
-        self.show_clt_child_window()
+        self.show_clt_child_window_clt()
         self.close()
 
 
-    def on_click_parse_or_test(self):
-
+    def on_click_others_options(self):
+        self.show_clt_child_window_other()
+        self.close()
         print('Parse or test')
         #self.close()
-
-    def centrer(self):
-        
-        """On définit la fonction qui va gérer le centrage de la fenetre """
-        
-        geometrie_fenetre = self.frameGeometry()                            # On obtient la géometrie de la fenetre
-        pointer_fenetre = QDesktopWidget().availableGeometry().center()     # On bouge le pointer au milieu de l'écran
-        geometrie_fenetre.moveCenter(pointer_fenetre)                       # On définit la géométrie de la fenetre au centre de l'écran
-        self.move(geometrie_fenetre.topLeft())                              # On bouge la fenetre au centre de l'écran
-
-
-      
-    def zone_ip(self):
-        
-        """ On crée la première zone de texte consacré à l'IP """
-        # creating a combo box widget
-        self.combo_box = QComboBox(self)
-  
-        # setting geometry of combo box
-        self.combo_box.setGeometry(200, 150, 400, 100)
-        lang_list = ["FR", "EN", "RU", "CH"]
-  
-        # making it editable
-        self.combo_box.setEditable(False)
-  
-        # adding list of items to combo box
-        self.combo_box.addItems(lang_list)
-  
-        # adjusting the size according to the maximum sized element
-        self.combo_box.adjustSize()
-
-           
+       
                          
 if __name__ == "__main__":
     app = QApplication(sys.argv)

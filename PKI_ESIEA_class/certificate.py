@@ -94,26 +94,28 @@ class certificate():
         elif type_key == "DSA": #Si le paramètre de type_key c'est DSA
             csr_private_key = genkey.generator_private_key_dsa(self,os.path.join(path_client,get.get_conf_client(self,"client")+".pem")) #On génère une clé privé de type DSA
         elif type_key == None:
-            pass
+            print(type_key)
+        else:
+            print(type_key)
                    
-        generator.create_request_client(self,csr_private_key,os.path.join(path_client,"cdiscount_cert.pem"),conf,algo) #On genère une requête de certificat client en appelant la méthode csr, et qui prend en paramètre la clé publique et l'aglo de hashage
+        generator.create_request_client(self,csr_private_key,os.path.join(path_client,get.get_conf_client(self,"client")+"_cert.pem"),conf,algo) #On genère une requête de certificat client en appelant la méthode csr, et qui prend en paramètre la clé publique et l'aglo de hashage
 
         with open(os.path.join(path_client, get.get_conf_client(self,"client")+"_cert.pem"), "rb") as csr_file :
             logging.info(f"On decode la requete du certificat client")
             csr = x509.load_pem_x509_csr(csr_file.read(), default_backend()) #On récupère les données de la requête de certificat client dans la variable csr
 
 
-        with open(os.path.join(get.get_path(self,"ra"),get.get_conf(self,self.configfile,"RA")["filename"] + ".pem"), "rb") as ra_public_key_file :
+        with open(os.path.join(get.get_path(self,"ra"),"ra_cert.pem"), "rb") as ra_public_key_file :
             logging.info(f"On decode le certificat du RA")
             ra_public_key = x509.load_pem_x509_certificate(ra_public_key_file.read(), default_backend()) #On récupère les données du certificat d'autorité d'enregistrement
 
 
-        with open(os.path.join(get.get_path(self,"ra"),get.get_conf(self,self.configfile,"RA")["privatekey"] + ".pem"), "rb") as ra_private_key_file :
+        with open(os.path.join(get.get_path(self,"ra"),"ra-private-key.pem"), "rb") as ra_private_key_file  :
             logging.info(f"On decode la cle prive du RA")
             ra_private_key = serialization.load_pem_private_key(ra_private_key_file.read(), password=None,backend= default_backend()) #On récupère la clé privé de l'autorité d'enregistrement
         
         logging.info(f"Signature certificat client par le RA")
-        signing.sign_client(self,csr, ra_public_key, ra_private_key, os.path.join(path_client,get.get_conf_client(self,"client")+"_cert.pem"),"MD5") #Si auparavant tout est validé, alors on signe le certificat
+        signing.sign_client(self,csr, ra_public_key, ra_private_key, os.path.join(path_client,get.get_conf_client(self,"client")+"_cert.pem"),algo)
 
     
     

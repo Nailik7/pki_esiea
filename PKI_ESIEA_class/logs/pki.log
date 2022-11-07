@@ -1,0 +1,42 @@
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA224', le pays France, l'etat ou la region 'Paris', l'adresse '12 rue de la joie', l'organistation 'Thales', ressource name 'ThalesGroup', l'hostname 'ThalesHost' et le DNS 'thalesgroup.com' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'DSA', l'algorithme de hash 'SHA1', le pays Etats-Unis d’Amérique, l'etat ou la region 'Nevada', l'adresse '12 rue de la peine', l'organistation 'Kilian', ressource name 'KilianRessource', l'hostname 'Host' et le DNS 'kilian.fr' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'MD5', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse '', l'organistation '', ressource name '', l'hostname '' et le DNS 'ss.gsxs' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'MD5', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse '', l'organistation '', ressource name '', l'hostname '' et le DNS 'ss.gsxs' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé '', l'algorithme de hash '', le pays 'France', l'etat ou la region 'Calvados', l'adresse 'addresse', l'organistation 'organisation', ressource name 'ressource', l'hostname 'host' et le DNS 'DNS.com' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash '', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'aaaa', l'organistation 'aaa', ressource name 'aa', l'hostname 'aa' et le DNS 'a.fr' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA1', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'd', l'organistation 'f', ressource name 'f', l'hostname 'f' et le DNS 'd.com' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA1', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'dd', l'organistation 'c', ressource name 'c', l'hostname 'f' et le DNS 'c.' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA1', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'dd', l'organistation 'c', ressource name 'c', l'hostname 'f' et le DNS 'c.' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA1', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'zkjcn', l'organistation 'kznc', ressource name 'zjncd', l'hostname 'zvjn' et le DNS 'huu.fr' 
+
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA1', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'asasasa', l'organistation 'asasas', ressource name 'asasa', l'hostname 'asasa' et le DNS 'asas.com' 
+
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Le dossier client existe deja
+INFO:root:Génération de la clé privé RSA en cours
+INFO:root:Génération de la cle privé RSA termine
+INFO:root:Le dossier client existe deja
+INFO:root:Génération de la clé privé RSA en cours
+INFO:root:Génération de la cle privé RSA termine
+INFO:root:On decode la requete du certificat client
+INFO:root:Le dossier client existe deja
+INFO:root:Génération de la clé privé RSA en cours
+INFO:root:Génération de la cle privé RSA termine
+INFO:root:On decode la requete du certificat client
+INFO:root:On decode le certificat du RA
+INFO:root:On decode la cle prive du RA
+INFO:root:Signature certificat client par le RA
+INFO:root:Un certificat client vient d'être créé en utilisant le type de clé 'RSA', l'algorithme de hash 'SHA1', le pays 'Afghanistan', l'etat ou la region 'Afghanistan', l'adresse 'addr', l'organistation 'org', ressource name 'ressource', l'hostname 'host' et le DNS 'dns.com' 
+
