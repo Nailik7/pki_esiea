@@ -455,6 +455,7 @@ class OtherOptions(QWidget):
                 GenerateClientUi.err_popup(self, "Erreur, veuillez entrer un chemin vers un fichier valide")
             else:
                 logging.info(f"Vérification que le fichier : '{subjet_cert}' est bien signé par le fichier : '{issuer_cert}' et  \n")
+                GenerateClientUi.popup(self, "Le certificat est bien signé par l'autorité d'enregistrement")
                 verif_parse.verifyIssuer(self, issuer_cert, subjet_cert)
                 print(f"issuer cert {issuer_cert} subject cert {subjet_cert}")
 
@@ -464,6 +465,7 @@ class OtherOptions(QWidget):
                 GenerateClientUi.err_popup(self, "Erreur, le chemin saisi est invalide")
             else:
                 logging.info(f"On parse le fichier {cert_to_parse} \n")
+                GenerateClientUi.popup(self, "parsé")
                 verif_parse.parse(self, cert_to_parse)
                 print(f"cert to parse {cert_to_parse}")
 
