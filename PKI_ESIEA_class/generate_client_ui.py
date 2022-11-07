@@ -836,10 +836,6 @@ class GenerateClientUi(QWidget):
         elif len(self.localisation) == 0 or len(self.organisation) == 0 or len(self.ressource_name) == 0 or len(self.hostname) == 0 or len(self.dns) == 0:
             self.err_popup("Erreur, tous les champs de texte doivent être rempli")
 
-        # Vérification des checkboxs du type de clé
-        elif self.checkbox_rsa.isChecked() == False and self.checkbox_dsa.isChecked() == False:
-            self.err_popup("Erreur, veuillez cocher un type de clé à créer")
-
         # Vérification des checkboxs du type d'algo
         elif self.checkbox_md5.isChecked() == False and self.checkbox_sha1.isChecked() == False and self.checkbox_sha224.isChecked() == False and self.checkbox_sha256.isChecked() == False:
             self.err_popup("Erreur, veuillez cocher un algorithme de chiffrement")
@@ -877,8 +873,12 @@ class GenerateClientUi(QWidget):
                     certificate.create_client(self, self.rsa_dsa, self.cnt, self.state_or_reg, self.localisation, self.organisation, self.ressource_name, self.hostname, self.dns, self.filename, self.hash_alg)
                     self.popup("Le certificat a été créé avec succès")
                 else:
-                    certificate.create_client(self, self.rsa_dsa, self.cnt, self.state_or_reg, self.localisation, self.organisation, self.ressource_name, self.hostname, self.dns, self.filename, self.hash_alg)
-                    self.popup("Le certificat a été créé avec succès")
+                    if self.checkbox_rsa.isChecked() == False and self.checkbox_dsa.isChecked() == False:
+                        self.err_popup("Erreur, veuillez cocher un type de clé à créer")
+                    else:
+
+                        certificate.create_client(self, self.rsa_dsa, self.cnt, self.state_or_reg, self.localisation, self.organisation, self.ressource_name, self.hostname, self.dns, self.filename, self.hash_alg)
+                        self.popup("Le certificat a été créé avec succès")
                 logging.info(f"Un certificat client vient d'être créé en utilisant le type de clé '{self.rsa_dsa}', l'algorithme de hash '{self.hash_alg}', le pays '{self.lang}', l'etat ou la region '{self.state_or_reg}', l'adresse '{self.localisation}', l'organistation '{self.organisation}', ressource name '{self.ressource_name}', l'hostname '{self.hostname}' et le DNS '{self.dns}' \n")
 
 
