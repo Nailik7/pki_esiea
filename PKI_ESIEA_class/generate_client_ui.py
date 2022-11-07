@@ -43,6 +43,8 @@ class GenerateClientUi(QWidget):
 
         self.yes_no = ""
 
+        self.private_k_file = ""
+
         self.hash_alg = ""
         self.rsa_dsa = ""
 
@@ -80,30 +82,17 @@ class GenerateClientUi(QWidget):
     def private_rsa_dsa(self):
         
 
-        self.file_zone = QLineEdit(self)
-        self.file_zone.move(100, 274)
-        self.file_zone.resize(250,26)
-        self.file_zone.setStyleSheet("border-radius: 5px; color: blue;")
-
 
         #Utils.paintEvent(self)
 
-        self.draw_text_select_file()
-        self.draw_button_select_file()
 
         self.checkbox()
+        self.form_has_certificate()
         self.form_no_certificate()
         self.form_create_certificate()
         
 
 
-
-    def browse_pem_key_file(self):
-        '''
-        Selection des fichiers PEM or KEY
-        '''
-        fname = QFileDialog.getOpenFileName(self, 'Open File', '.', 'PEM OR KEY (*.pem *.key)')
-        self.file_zone.setText(fname[0])
 
 
 
@@ -119,13 +108,12 @@ class GenerateClientUi(QWidget):
 
         ''' On définit la position des champs '''
 
-        self.label_select_file.move(75,30)
+        self.label_select_file.setGeometry(75,220, 300, 50)
         self.button_browse.move(375, 274)
         self.button_browse.resize(100, 25)
 
 
         self.label_select_type_of_key.setGeometry(75, 199, 300, 30)
-        self.label_select_hash_alg.setGeometry(75, 250, 400, 20)
         self.label_form_create_certificate.setGeometry(75, 350, 400, 20)
 
         self.combo_box_select_lang.setGeometry(135, 400, 150, 25)
@@ -192,13 +180,19 @@ class GenerateClientUi(QWidget):
             self.checkbox_dsa.hide()
             self.checkbox_rsa.hide()
 
-            self.checkbox_md5.hide()
-            self.checkbox_sha224.hide()
-            self.checkbox_sha1.hide()
-            self.checkbox_sha256.hide()
+            self.checkbox_md5.setGeometry(75, 180, 100, 50)
+            self.checkbox_md5.show()
+
+            self.checkbox_sha224.setGeometry(225, 180, 100, 50)
+            self.checkbox_sha224.show()
+            self.checkbox_sha1.setGeometry(375, 180, 100, 50)
+            self.checkbox_sha1.show()
+            self.checkbox_sha256.setGeometry(525, 180, 100, 50)
+            self.checkbox_sha256.show()
 
             self.label_select_type_of_key.hide()
-            self.label_select_hash_alg.hide()
+            self.label_select_hash_alg.setGeometry(75, 150, 400, 50)
+            self.label_select_hash_alg.show()
 
             self.label_form_create_certificate.show()
             self.combo_box_select_lang.show()
@@ -248,12 +242,18 @@ class GenerateClientUi(QWidget):
             self.checkbox_dsa.show()
             self.checkbox_rsa.show()
 
+            
+            self.checkbox_md5.setGeometry(75, 280, 100, 50)
             self.checkbox_md5.show()
+            self.checkbox_sha224.setGeometry(225, 280, 100, 50)
             self.checkbox_sha224.show()
+            self.checkbox_sha1.setGeometry(375, 280, 100, 50)
             self.checkbox_sha1.show()
+            self.checkbox_sha256.setGeometry(525, 280, 100, 50)
             self.checkbox_sha256.show()
 
             self.label_select_type_of_key.show()
+            self.label_select_hash_alg.setGeometry(75, 250, 400, 20)
             self.label_select_hash_alg.show()
 
             self.label_form_create_certificate.show()
@@ -373,45 +373,6 @@ class GenerateClientUi(QWidget):
 
 
 
-
-    def draw_text_select_file(self):
-        '''
-        On crée le texte de séléction de la clé
-        '''
-
-        self.label_select_file = QLabel("Séléctionnez votre clé privé :")
-        self.layout_test.addWidget(self.label_select_file)
-        self.setLayout(self.layout_test)
-        self.label_select_file.setFont(QFont('Lato', 14))
-
-
-    def draw_button_select_file(self):
-        '''
-        On crée le bouton de séléction de la clé
-        '''
-
-        self.button_browse = QPushButton('Rechercher', self)
-        self.layout_test.addWidget(self.button_browse)
-        self.setLayout(self.layout_test)
-        self.button_browse.clicked.connect(self.browse_pem_key_file)
-        self.button_browse.setStyleSheet("QPushButton"
-                             "{"
-                             "background-color : #7dbdda;"      # On définit un fond pour le bouton dans les tons bleus
-                             "}"
-                             "QPushButton::hover"               # Losque l'on passe la souris sur le bouton
-                             "{"
-                             "background-color : #7dda99;"      # On définit un fond pour le bouton dans les tons verts
-                             "}"
-                             "QPushButton::pressed"             # Lorsque le bouton est appuyé 
-                             "{"
-                             "background-color : #48d873;"      # On définit un fond pour le bouton dans les tons verts
-                             "}"
-                             )
-        
-        
-
-
-
         
     def draw_text_has_certificate(self, qp):
         '''
@@ -519,6 +480,43 @@ class GenerateClientUi(QWidget):
                 self.hidden = 2
 
             
+    def form_has_certificate(self):
+
+        self.label_select_file = QLabel("Séléctionnez votre clé privé :")
+        self.layout_test.addWidget(self.label_select_file)
+        self.setLayout(self.layout_test)
+        self.label_select_file.setFont(QFont('Lato', 14))
+
+        self.file_zone = QLineEdit(self)
+        self.file_zone.move(100, 274)
+        self.file_zone.resize(250,26)
+        self.file_zone.setStyleSheet("border-radius: 5px; color: blue;")
+
+        self.button_browse = QPushButton('Rechercher', self)
+        self.layout_test.addWidget(self.button_browse)
+        self.setLayout(self.layout_test)
+        self.button_browse.clicked.connect(self.browse_pem_key_file)
+        self.button_browse.setStyleSheet("QPushButton"
+                             "{"
+                             "background-color : #7dbdda;"      # On définit un fond pour le bouton dans les tons bleus
+                             "}"
+                             "QPushButton::hover"               # Losque l'on passe la souris sur le bouton
+                             "{"
+                             "background-color : #7dda99;"      # On définit un fond pour le bouton dans les tons verts
+                             "}"
+                             "QPushButton::pressed"             # Lorsque le bouton est appuyé 
+                             "{"
+                             "background-color : #48d873;"      # On définit un fond pour le bouton dans les tons verts
+                             "}"
+                             )
+        
+    def browse_pem_key_file(self):
+        '''
+        Selection des fichiers PEM or KEY
+        '''
+        fname = QFileDialog.getOpenFileName(self, 'Open File', '.', 'PEM OR KEY (*.pem *.key)')
+        self.file_zone.setText(fname[0])
+
 
 
     def form_no_certificate(self):
@@ -790,6 +788,16 @@ class GenerateClientUi(QWidget):
         msg.setText(str(message))
         msg.exec_()
 
+    def popup(self, message: str):
+        '''
+        Fonction permettant d'afficher une popup d'erreur
+        message -> str (Message à afficher)
+        '''
+        msg = QMessageBox()
+        msg.setWindowTitle("Succès")
+        msg.setText(str(message))
+        msg.exec_()
+
         
 
     def send_clt(self):
@@ -861,8 +869,8 @@ class GenerateClientUi(QWidget):
             
             else:
                 self.state_or_reg = self.lang
-                print(self.cnt)
                 certificate.create_client(self, self.rsa_dsa, self.cnt, self.state_or_reg, self.localisation, self.organisation, self.ressource_name, self.hostname, self.dns, self.filename, self.hash_alg)
+                self.popup("Le certificat a été créé avec succès")
                 logging.info(f"Un certificat client vient d'être créé en utilisant le type de clé '{self.rsa_dsa}', l'algorithme de hash '{self.hash_alg}', le pays '{self.lang}', l'etat ou la region '{self.state_or_reg}', l'adresse '{self.localisation}', l'organistation '{self.organisation}', ressource name '{self.ressource_name}', l'hostname '{self.hostname}' et le DNS '{self.dns}' \n")
 
 

@@ -23,7 +23,8 @@ from PyQt5.QtWidgets import (
     QGridLayout,
     QCheckBox,
 )
-
+from verif_parse import verif_parse
+from generate_client_ui import GenerateClientUi
 import pdb, sys, validators, logging
 
 """ ------------------------------------------ """
@@ -60,6 +61,8 @@ class OtherOptions(QWidget):
 
         self.checkbox()
         self.form_issuer()
+        self.form_parse()
+        self.form_validity()
         
 
 
@@ -84,6 +87,18 @@ class OtherOptions(QWidget):
         self.file_subject.setGeometry(75, 400, 200, 25)
         self.button_browse_subject.setGeometry(300, 400, 100, 25)
 
+        self.label_form_select_parse_certif.setGeometry(75, 250, 450, 25)
+        self.file_to_parse.setGeometry(75, 300, 200, 25)
+        self.button_browse_file_to_parse.setGeometry(300, 300, 100, 25)
+
+        
+        self.label_form_select_validity.setGeometry(75, 250, 475, 25)
+        self.file_to_check_validity.setGeometry(75, 300, 200, 25)
+        self.button_browse_file_validate.setGeometry(300, 300, 100, 25)
+
+        self.button_validate_issuer.setGeometry(275, 500, 150, 25)
+            
+
 
         if self.status == 1:
             self.label_form_select_issuercertificate.show()
@@ -92,6 +107,58 @@ class OtherOptions(QWidget):
             self.label_form_select_subject_certificate.show()
             self.file_subject.show()
             self.button_browse_subject.show()
+
+            self.label_form_select_parse_certif.hide()
+            self.file_to_parse.hide()
+            self.button_browse_file_to_parse.hide()
+
+            self.label_form_select_validity.hide()
+            self.file_to_check_validity.hide()
+            self.button_browse_file_validate.hide()
+
+            self.button_validate_issuer.show()
+
+
+        
+        elif self.status == 2:
+            self.label_form_select_issuercertificate.hide()
+            self.file_issuer.hide()
+            self.button_browse_issuer.hide()
+            self.label_form_select_subject_certificate.hide()
+            self.file_subject.hide()
+            self.button_browse_subject.hide()
+
+            self.label_form_select_parse_certif.show()
+            self.file_to_parse.show()
+            self.button_browse_file_to_parse.show()
+
+            self.label_form_select_validity.hide()
+            self.file_to_check_validity.hide()
+            self.button_browse_file_validate.hide()
+
+            self.button_validate_issuer.show()
+            
+
+        elif self.status == 3:
+
+            self.label_form_select_issuercertificate.hide()
+            self.file_issuer.hide()
+            self.button_browse_issuer.hide()
+            self.label_form_select_subject_certificate.hide()
+            self.file_subject.hide()
+            self.button_browse_subject.hide()
+
+            self.label_form_select_parse_certif.hide()
+            self.file_to_parse.hide()
+            self.button_browse_file_to_parse.hide()
+
+            self.label_form_select_validity.show()
+            self.file_to_check_validity.show()
+            self.button_browse_file_validate.show()
+
+            self.button_validate_issuer.show()
+
+
         else:
             self.label_form_select_issuercertificate.hide()
             self.file_issuer.hide()
@@ -99,6 +166,18 @@ class OtherOptions(QWidget):
             self.label_form_select_subject_certificate.hide()
             self.file_subject.hide()
             self.button_browse_subject.hide()
+
+            self.label_form_select_parse_certif.hide()
+            self.file_to_parse.hide()
+            self.button_browse_file_to_parse.hide()
+
+            self.label_form_select_validity.hide()
+            self.file_to_check_validity.hide()
+            self.button_browse_file_validate.hide()
+
+            self.button_validate_issuer.hide()
+            
+            
 
         qp.end()
 
@@ -251,7 +330,7 @@ class OtherOptions(QWidget):
                              "}"
                              )
 
-        self.button_validate_issuer = QPushButton('Rechercher', self)
+        self.button_validate_issuer = QPushButton('Valider', self)
         self.layout_test.addWidget(self.button_validate_issuer)
         self.setLayout(self.layout_test)
         self.button_validate_issuer.clicked.connect(self.validate_issuer)
@@ -283,18 +362,123 @@ class OtherOptions(QWidget):
         fname = QFileDialog.getOpenFileName(self, 'Open File', '.', 'PEM, KEY OR CRT (*.pem *.key *.crt)')
         self.file_subject.setText(fname[0])
 
+    def form_parse(self):
+
+
+        self.label_form_select_parse_certif = QLabel("Veuillez séléctionner le path vers le certificat à parser :")
+        self.layout_test.addWidget(self.label_form_select_parse_certif)
+        self.setLayout(self.layout_test)
+        self.label_form_select_parse_certif.setFont(QFont('Lato', 14))
+
+        self.file_to_parse = QLineEdit(self)
+        self.file_to_parse.move(100, 274)
+        self.file_to_parse.resize(250,26)
+        self.file_to_parse.setStyleSheet("border-radius: 5px; color: blue;")
+
+        self.button_browse_file_to_parse = QPushButton('Rechercher', self)
+        self.layout_test.addWidget(self.button_browse_file_to_parse)
+        self.setLayout(self.layout_test)
+        self.button_browse_file_to_parse.clicked.connect(self.browse_file_to_parse)
+        self.button_browse_file_to_parse.setStyleSheet("QPushButton"
+                             "{"
+                             "background-color : #7dbdda;"      # On définit un fond pour le bouton dans les tons bleus
+                             "}"
+                             "QPushButton::hover"               # Losque l'on passe la souris sur le bouton
+                             "{"
+                             "background-color : #7dda99;"      # On définit un fond pour le bouton dans les tons verts
+                             "}"
+                             "QPushButton::pressed"             # Lorsque le bouton est appuyé 
+                             "{"
+                             "background-color : #48d873;"      # On définit un fond pour le bouton dans les tons verts
+                             "}"
+                             )
+
+    def browse_file_to_parse(self):
+        '''
+        Selection des fichiers PEM or KEY
+        '''
+        fname = QFileDialog.getOpenFileName(self, 'Open File', '.', 'PEM (*.pem)')
+        self.file_to_parse.setText(fname[0])
+
+
+
+    def form_validity(self):
+
+
+        self.label_form_select_validity = QLabel("Veuillez séléctionner le path vers le certificat à analyser :")
+        self.layout_test.addWidget(self.label_form_select_validity)
+        self.setLayout(self.layout_test)
+        self.label_form_select_validity.setFont(QFont('Lato', 14))
+
+        self.file_to_check_validity = QLineEdit(self)
+        self.file_to_check_validity.move(100, 274)
+        self.file_to_check_validity.resize(250,26)
+        self.file_to_check_validity.setStyleSheet("border-radius: 5px; color: blue;")
+
+        self.button_browse_file_validate = QPushButton('Rechercher', self)
+        self.layout_test.addWidget(self.button_browse_file_validate)
+        self.setLayout(self.layout_test)
+        self.button_browse_file_validate.clicked.connect(self.browse_file_to_check_validity)
+        self.button_browse_file_validate.setStyleSheet("QPushButton"
+                             "{"
+                             "background-color : #7dbdda;"      # On définit un fond pour le bouton dans les tons bleus
+                             "}"
+                             "QPushButton::hover"               # Losque l'on passe la souris sur le bouton
+                             "{"
+                             "background-color : #7dda99;"      # On définit un fond pour le bouton dans les tons verts
+                             "}"
+                             "QPushButton::pressed"             # Lorsque le bouton est appuyé 
+                             "{"
+                             "background-color : #48d873;"      # On définit un fond pour le bouton dans les tons verts
+                             "}"
+                             )
+
+    def browse_file_to_check_validity(self):
+        '''
+        Selection des fichiers PEM or KEY
+        '''
+        fname = QFileDialog.getOpenFileName(self, 'Open File', '.', 'PEM (*.pem)')
+        self.file_to_check_validity.setText(fname[0])
+
+
+
+
+
 
     def validate_issuer(self):
+
         if self.checkbox_issuer.isChecked() == True:
             issuer_cert = self.file_issuer.text()
             subjet_cert = self.file_subject.text()
-            print(f"issuer cert {issuer_cert} subject cert {subjet_cert}")
+
+            if issuer_cert == "" or subjet_cert == "":
+                GenerateClientUi.err_popup(self, "Erreur, veuillez entrer un chemin vers un fichier valide")
+            else:
+                logging.info(f"Vérification que le fichier : '{subjet_cert}' est bien signé par le fichier : '{issuer_cert}' et  \n")
+                verif_parse.verifyIssuer(self, issuer_cert, subjet_cert)
+                print(f"issuer cert {issuer_cert} subject cert {subjet_cert}")
+
         elif self.checkbox_parse.isChecked() == True:
-            print("parse")
+            cert_to_parse = self.file_to_parse.text()
+            if cert_to_parse == "":
+                GenerateClientUi.err_popup(self, "Erreur, le chemin saisi est invalide")
+            else:
+                logging.info(f"On parse le fichier {cert_to_parse} \n")
+                verif_parse.parse(self, cert_to_parse)
+                print(f"cert to parse {cert_to_parse}")
+
         elif self.checkbox_validity.isChecked() == True:
+            validity = self.file_to_check_validity.text()
+            if validity == "":
+                GenerateClientUi.err_popup(self, "Erreur, le chemin saisi est invalide")
+            else:
+                logging.info(f"On parse le fichier {validity} \n")
+                verif_parse.expiration(self, validity)
             print("validity")
         else:
-            print('error')
+            GenerateClientUi.err_popup(self, "Erreur, veuillez séléctionner une action")
+
+
 
 if __name__ == "__main__":
     

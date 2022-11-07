@@ -28,7 +28,7 @@ class certificate():
         
        
     
-    def create_ca(self):
+    def create_ca(self, configfile):
         
         try:
             logging.info(f"Creation du certificat de l'autorite racine") 
@@ -46,7 +46,7 @@ class certificate():
         generator.generator_cert_ca(self,private_key, os.path.join(path_ca,conf["filename"] + ".pem"), conf) #On appelle la méthode pour générer un certificat CA, en paramètre on utilise notre propre clé pribe et on s'autosigne car on est l'autorité racine
         
         
-    def create_ra(self,path_ca : str):  
+    def create_ra(self,path_ca : str, configfile):  
             
         try:
             logging.info(f"Creation du certificat de l'autorite d'enregistrement") 

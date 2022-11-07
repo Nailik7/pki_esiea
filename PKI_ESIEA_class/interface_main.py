@@ -1,4 +1,6 @@
 from generate_client_ui import GenerateClientUi
+from certificate import certificate
+from get import get
 from other_options import OtherOptions
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot
@@ -14,13 +16,14 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
 )
 #from generate_client_ui import GenerateClientUi as gc
-import pdb, sys
+import pdb, sys, logging
+from argparse import ArgumentParser, Namespace
 
 class MainWindow(QWidget):
     
-    def __init__(self):
+    def __init__(self, configfile: list):
         super().__init__()
-
+        self.configfile = configfile
         self.zone_texte_longueur = 50
         self.zone_texte_largeur = 20
         
@@ -35,11 +38,7 @@ class MainWindow(QWidget):
         self.resize(700,850)                            # On redéfinit la taille de la fenetre en 400 par 400
         
         
-        #self.zone_ip()      # On appelle les fonctions permettant d'afficher la zone de texte correspondant à l'IP
-        #self.zone_api()     # On appelle les fonctions permettant d'afficher la zone de texte correspondant à l'API
-        #self.zone_host()    # On appelle les fonctions permettant d'afficher la zone de texte correspondant à l'host
-               
-        
+
         """ On crée le bouton qui va s'occuper du certificat racine """
         
         button_generate_auth = QPushButton('Générer le certificat racine', self)        # On définit le titre du bouton      
@@ -107,27 +106,14 @@ class MainWindow(QWidget):
 
 
 
-    @pyqtSlot()
     def on_click_generate_auth(self):
         
-        """On définit la fonction qui va gérer l'appui sur le bouton"""
-        print("generation du certificat racine")
-        #self.close()
-
-
+        logging.info(f"Generation du certificat racine terminée \n")
+        certificate.create_ca(self, configfile)
+        certificate.create_ra(self, get.get_path(self, 'ca'), configfile)
+        GenerateClientUi.popup(self, "Création terminée")
         
-        
-        '''
-        ip = self.zone_texte_ip.text()                                   # On prend le résultat de la zone de texte ip qu'on stocke dans une variable
-        api = self.zone_texte_api.text()                                 # On prend le résultat de la zone de texte api qu'on stocke dans une variable
-        host = self.zone_texte_hostname.text()                           # On prend le résultat de la zone de texte hostname qu'on stocke dans une variable
-        '''
 
-
-        '''
-        if not validators.url(ping) or not requests.ConnectionError:            # On regarde si l'url est valide si on arrive à contacter correctement l'host.
-            QMessageBox.about(self, "Erreur critique",  "host invalide")
-        '''
 
 
     def show_clt_child_window_clt(self):
@@ -147,11 +133,18 @@ class MainWindow(QWidget):
     def on_click_others_options(self):
         self.show_clt_child_window_other()
         self.close()
-        print('Parse or test')
-        #self.close()
-       
-                         
+
+
+def parse_args()-> Namespace:
+    parser = ArgumentParser()
+    parser.add_argument("-c", "--config", help="Config file", required=True, dest="config", nargs='+')
+    return parser.parse_args()
+
+
+
 if __name__ == "__main__":
+    args = parse_args()
+    configfile = args.config
     app = QApplication(sys.argv)
-    main = MainWindow()
+    main = MainWindow(configfile)
     app.exec_()
