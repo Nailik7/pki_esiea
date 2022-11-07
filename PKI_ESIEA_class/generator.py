@@ -19,7 +19,7 @@ from get import get
 
 
 class generator():
-    def generator_cert_ca(self,private_key, filename, conf):
+    def generator_cert_ca(self,private_key, filename, conf): 
         subject = x509.Name(
             [
                 x509.NameAttribute(NameOID.COUNTRY_NAME, conf["Country"]),
@@ -28,7 +28,7 @@ class generator():
                 x509.NameAttribute(NameOID.ORGANIZATION_NAME, conf["Organization"]),
                 x509.NameAttribute(NameOID.ORGANIZATIONAL_UNIT_NAME, conf["Ressource name"]),
                 x509.NameAttribute(NameOID.COMMON_NAME, conf["Hostname"]),
-            ])
+            ]) #On ajoute la configuration au certificat, le CN, le nom le pays ect 
 
 
 
@@ -48,14 +48,14 @@ class generator():
 
                 .not_valid_after(datetime.utcnow() + timedelta(days=360))
 
-                .add_extension(x509.BasicConstraints(ca=True,path_length=None), critical=True))
+                .add_extension(x509.BasicConstraints(ca=True,path_length=None), critical=True))  #On construit le certificat avec la conf au-dessus, ainsi on lui ajout les attributs d'expirations et sa clé publique, la conf sera stocké dans la variable builder
 
 
 
-        public_key = builder.sign(private_key, hashes.SHA256(), default_backend())
+        public_key = builder.sign(private_key, hashes.SHA256(), default_backend()) #Le certificat d'atorite, s'auto signe avec sa cle prive
         with open(filename, "wb") as certfile:
 
-            certfile.write(public_key.public_bytes(serialization.Encoding.PEM))
+            certfile.write(public_key.public_bytes(serialization.Encoding.PEM)) #On gén_re le fichier de certificat de l'autorité d'enregistrement
 
         return public_key
         
@@ -73,7 +73,7 @@ class generator():
                 x509.NameAttribute(NameOID.ORGANIZATION_NAME, conf["Organization"]),
                 x509.NameAttribute(NameOID.ORGANIZATIONAL_UNIT_NAME, conf["Ressource name"]),
                 x509.NameAttribute(NameOID.COMMON_NAME, conf["Hostname"]),
-           ])
+           ]) #On ajoute la configuration au certificat, le CN, le nom le pays ect 
 
         builder = (
                 x509.CertificateBuilder()
@@ -93,11 +93,11 @@ class generator():
                 .add_extension(x509.BasicConstraints(ca=False,path_length=None), critical=True))
 
 
-        public_key = builder.sign(private_key, hashes.SHA256(), default_backend())
-        public_key = builder.sign(private_key_ca, hashes.SHA256(), default_backend())    
+        public_key = builder.sign(private_key, hashes.SHA256(), default_backend()) #On signe le certificat d'autorité d'enregistrement par lui même
+        public_key = builder.sign(private_key_ca, hashes.SHA256(), default_backend())  #Le certfificat est également signé oar l'autorité 
         with open(filename, "wb") as certfile:
 
-            certfile.write(public_key.public_bytes(serialization.Encoding.PEM))
+            certfile.write(public_key.public_bytes(serialization.Encoding.PEM)) #On genère le fichier certificat RA 
 
 
         return public_key
@@ -115,28 +115,28 @@ class generator():
                 x509.NameAttribute(NameOID.ORGANIZATION_NAME, conf["Organization"]),
                 x509.NameAttribute(NameOID.ORGANIZATIONAL_UNIT_NAME, conf["Ressource name"]),
                 x509.NameAttribute(NameOID.COMMON_NAME, conf["Hostname"]),
-           ])
+           ]) #On ajoute la configuration au certificat, le CN, le nom le pays ect 
         dns_names = []
         for name in conf.get("DNS", []):
 
             dns_names.append(x509.DNSName(name))
 
-        san = x509.SubjectAlternativeName(dns_names)
+        dns = x509.SubjectAlternativeName(dns_names)
 
 
-        builder = (x509.CertificateSigningRequestBuilder().subject_name(subject).add_extension(san, critical=False))
+        builder = (x509.CertificateSigningRequestBuilder().subject_name(subject).add_extension(dns, critical=False)) #Toute la configuration sera contenu dans la variable builder
         
         
-        csr = builder.sign(private_key,get.get_algo_hash(self,algo), default_backend())
+        client = builder.sign(private_key,get.get_algo_hash(self,algo), default_backend()) #Le client auto-signe le certificat avec sa clé privé
         
 
-        with open(filename, "wb") as csrfile:
+        with open(filename, "wb") as clientfile:
 
-            csrfile.write(csr.public_bytes(serialization.Encoding.PEM))
+            clientfile.write(client.public_bytes(serialization.Encoding.PEM)) #On genère le fichier du certificat client 
 
-        return csr  
+        return client  
     
-    def generator_crl(self,ra_private_key,ra_public_key, filename):
+    def generator_crl(self,ra_private_key,ra_public_key, filename): #Cette fonction va permetter de generer un certificat de revocation
         builder = (
                 x509.CertificateRevocationListBuilder()
 
@@ -144,13 +144,13 @@ class generator():
 
                 .last_update(datetime.now()-timedelta(hours=1))
 
-                .next_update(datetime.now() + timedelta(1) - timedelta(hours=1)))
+                .next_update(datetime.now() + timedelta(1) - timedelta(hours=1))) #On lui rajoute une autorité qui est le RA (l'autorité d'enregsitrement), également on lui rajoute les dèrenières maj
         
-        crl = builder.sign(ra_private_key, hashes.SHA256(), default_backend())
+        crl = builder.sign(ra_private_key, hashes.SHA256(), default_backend()) 
         
-        with open(filename, "wb") as csrfile:
+        with open(filename, "wb") as crlfile:
 
-                csrfile.write(crl.public_bytes(serialization.Encoding.PEM))
+                crlfile.write(crl.public_bytes(serialization.Encoding.PEM)) #On génère le fichier du certificat de revocation 
 
         
 

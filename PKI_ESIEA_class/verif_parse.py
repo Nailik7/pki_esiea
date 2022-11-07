@@ -40,7 +40,7 @@ class verif_parse():
                                           padding = padding.PKCS1v15(),algorithm =subject_public_key.signature_hash_algorithm)
         print(type(subject_public_key.tbs_certificate_bytes))
         if verifier == None :
-            print("Its good")
+            print("Le certificat est bien signe par l'autorite d'enregistrement")
         else :
             print("ajout",revoke.add_revoke(self,subject_public_key))
     
@@ -55,21 +55,21 @@ class verif_parse():
             
           
     def parse(self,cert_file : str):
-        with open(cert_file, 'rb+') as file :
-            X509_cert = x509.load_pem_x509_certificate(file.read(),default_backend())
-            subject = str(X509_cert.subject).replace("<","").replace(">","").replace("Name","").replace("(", "").replace(")", "").split(",")
+        with open(cert_file, 'rb+') as file : #On charge le certificat à parser 
+            X509_cert = x509.load_pem_x509_certificate(file.read(),default_backend()) 
+            subject = str(X509_cert.subject).replace("<","").replace(">","").replace("Name","").replace("(", "").replace(")", "").split(",") #On crée une varaible qui recupère tous ses attributs en string, et on supprilme tous les caractères spéciaux 
             
-            if X509_cert.issuer is not None :
+            if X509_cert.issuer is not None : #Si le certificat est issu d'une autorité 
                 Issuer = str(X509_cert.issuer).replace("<","").replace(">","").replace("Name","").replace("(", "").replace(")", "").split(",")
                 issuer_dict = { 
-                                'Country ' : Issuer[0][Issuer[0].find('='):].replace("=",""),
+                                'Country ' : Issuer[0][Issuer[0].find('='):].replace("=",""), 
                                 'State' : Issuer[1][Issuer[1].find('='):].replace("=",""),
                                 'Localisation' : Issuer[2][Issuer[2].find('='):].replace("=",""),
                                 'Organisation' : Issuer[3][Issuer[3].find('='):].replace("=",""),
                                 'Organisation unit' : Issuer[4][Issuer[4].find('='):].replace("=",""),
                                 'Common Name' : Issuer[5][Issuer[5].find('='):].replace("=","")
                             
-                            }
+                            } #On afffiche dans un dictionnaire tous les attributs de l'autorité, et on supprime le signe "=" et tout ce qui est avant pour un meilleur affichage 
 
             subject_dict = {
                 
@@ -83,7 +83,7 @@ class verif_parse():
                             'Algorithm hash ' : X509_cert.signature_hash_algorithm.name,
                             'Serial Number' : X509_cert.serial_number,
                             'Cerfificate expire after ' : str(X509_cert.not_valid_after)    
-                        }
+                        } #On afffiche dans un dictionnaire tous les attributs du certificat, et on supprime le signe "=" et tout ce qui est avant pour un meilleur affichage 
             print(subject_dict,issuer_dict)
             
         
