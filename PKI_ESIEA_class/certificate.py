@@ -9,7 +9,6 @@ from generator import generator
 from key import genkey
 from signing import signing
 from get import get
-from argparse import ArgumentParser, Namespace
 import json
 
 
@@ -128,10 +127,6 @@ class certificate():
         generator.generator_crl(self,ra_private_key,ra_public_key,os.path.join(path_crl,"crl_cert.pem")) #On va générer un cerfiticat qui va contenir la liste des certificats révoqués
 
     
-    
-def parse_args()-> Namespace:
-    parser = ArgumentParser()
-    parser.add_argument("-c", "--config", help="Config file", required=True, dest="config", nargs='+')
-    return parser.parse_args()
+
             
         
