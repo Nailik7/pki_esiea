@@ -81,10 +81,3 @@ class verif_parse():
             return str(subject_dict) + '\n\n\n\n' + str(issuer_dict)
             
             
-        
-def main():
-    a = verif_parse()
-    
-    
-if __name__ == "__main__": 
-    main()
