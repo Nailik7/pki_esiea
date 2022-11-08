@@ -115,6 +115,7 @@ class certificate():
         except OSError as e :
             print("Le dossier existe déja") #Si le dossier existe déja on n'écrase pas l'ancien dossier
             pass
+        
         conf= get.get_conf(self,configfile,"RA")
 
         with open(os.path.join(get.get_path(self,"ra"),conf["filename"] + ".pem"), "rb") as ra_public_key_file :
@@ -134,12 +135,3 @@ def parse_args()-> Namespace:
     return parser.parse_args()
             
         
-
-
-def main():
-    args = parse_args()
-    configfile = args.config
-    ca = certificate(configfile) #On crée une instance de la classe Certifificate 
-    
-if __name__ == "__main__": 
-    main()
